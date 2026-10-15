@@ -18,6 +18,7 @@
 
         <h2>{{ libro.titulo }}</h2>
         <p>Precio con IVA: <strong>${{ total }}</strong></p>
+        <p>Stock disponible: <strong>{{ libro.stock_actual }}</strong></p>
 
         <form method="post">
             {% csrf_token %}
