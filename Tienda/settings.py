@@ -46,6 +46,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    # Tutorial 05: Gunicorn no sirve archivos estaticos; WhiteNoise entrega el
+    # CSS/JS (p. ej. el de la interfaz web de DRF) que antes servia runserver.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

@@ -4,3 +4,4 @@ markdown
 django-filter
 psycopg2-binary
 gunicorn  # <-- NUEVO SERVIDOR WSGI
+whitenoise  # Sirve los archivos estaticos (CSS/JS) detras de Gunicorn
