@@ -12,19 +12,32 @@ services:
 
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    # CAMBIO 1: Usamos Gunicorn en lugar de runserver
+    # 'Tienda' es el nombre de la carpeta donde esta su wsgi.py
+    command: gunicorn Tienda.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - .:/app
-    ports:
-      - "8000:8000"
     depends_on:
       - db
     environment:
       - DB_NAME=tienda_db
       - DB_USER=postgres
       - DB_PASSWORD=secret_password
-      - DB_HOST=db  # Nombre del servicio definido arriba
+      - DB_HOST=db
+      - DB_PORT=5432
       - DJANGO_ALLOWED_HOSTS=*  # Acceso por la IP publica de la EC2
+    # NOTA: Ya no hay seccion 'ports' aqui. Django esta aislado.
+
+  # CAMBIO 2: Agregamos el servicio Nginx
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"  # Nginx es el unico que da la cara a internet
+    volumes:
+      # Inyectamos nuestro archivo de configuracion en el contenedor
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
